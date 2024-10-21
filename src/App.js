@@ -7,15 +7,15 @@ import {useState} from "react";
 function App() {
 
     // let post = '강남 고기 맛집';
-    let [titles, set]= useState(
+    let [titles, setter]= useState(
         [
+            {title : '파이썬 독학', goodCnt : 0},
             {title : '남자 코트 추천', goodCnt : 0},
             {title : '우동 맛집', goodCnt : 0},
-            {title : '파이썬 독학', goodCnt : 0}
     ]);
 
     function goodCntAdd(index) {
-        set(obj => {
+        setter(obj => {
             const newObj = [...obj];
             obj[index] = {...obj[index], goodCnt : newObj[index].goodCnt + 1};
             return newObj;
@@ -23,7 +23,7 @@ function App() {
     }
 
     function change(index) {
-        set(obj => {
+        setter(obj => {
             const objElement = [...obj];
 
             for (const target of objElement) {
@@ -36,12 +36,21 @@ function App() {
         })
     }
 
+    function orderBy() {
+        let sort = [...titles].sort((a, b) =>
+            a.title.localeCompare(b.title, 'ko', { sensitivity: 'base' })
+        );
+        setter(sort);
+    }
+
     return (
         <div className="App">
 
             <div className="black-nav">
                 <h4 style={{ fontSize: '16px'}}>React blog</h4>
             </div>
+
+            <button onClick={orderBy}>가나다 순 정렬</button>
 
             {titles.map((obj, index) => (
                 <div className="list" key={index}>
