@@ -45,7 +45,6 @@ function App() {
 
     return (
         <div className="App">
-
             <div className="black-nav">
                 <h4 style={{ fontSize: '16px'}}>React blog</h4>
             </div>
@@ -59,8 +58,27 @@ function App() {
                     <p>2월 17일 발행</p>
                 </div>
             ))}
+
+            <Modal/>
         </div>
     );
+}
+
+// const Modal = () => { // 내충 내용 ~ }
+function Modal() {
+    // 컴포넌트 생성 법칙
+    // 1. 반복적으로 html을 축약할 때
+    // 2. 큰 페이지들
+    // 3. 자주 변경되는 것들
+    return (
+        <>
+            <div className="modal">
+                <h4>제목</h4>
+                <p>날짜</p>
+                <p>상세내용</p>
+            </div>
+        </>
+    )
 }
 
 export default App;
