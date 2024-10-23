@@ -9,10 +9,15 @@ function App() {
     // let post = '강남 고기 맛집';
     let [titles, setter]= useState(
         [
-            {title : '파이썬 독학', goodCnt : 0},
-            {title : '남자 코트 추천', goodCnt : 0},
-            {title : '우동 맛집', goodCnt : 0},
+            {title : '파이썬 독학', goodCnt : 0, content: '파이썬 독학은 어렵지 않아요', createDate: '2021-02-17'},
+            {title : '남자 코트 추천', goodCnt : 0, content: '올겨울은 남자 코트 추천', createDate: '2021-02-18'},
+            {title : '우동 맛집', goodCnt : 0, content: '우동 맛집을 소개', createDate: '2021-02-19'},
     ]);
+
+    let [selectedPost, setSelectedPost] = useState(null);
+
+    // set 어쩌구 저쩌구 ~~
+    let [modal, setModal] = useState(false);
 
     function goodCntAdd(index) {
         setter(obj => {
@@ -43,6 +48,17 @@ function App() {
         setter(sort);
     }
 
+    function modalOpen(index) {
+        if (modal && index === selectedPost) {
+            setModal(false);
+            setSelectedPost(null);
+            return ;
+        }
+
+        setModal(true);
+        setSelectedPost(index);
+    }
+
     return (
         <div className="App">
             <div className="black-nav">
@@ -54,18 +70,22 @@ function App() {
             {titles.map((obj, index) => (
                 <div className="list" key={index}>
                     <button onClick={() => change(index)}>{obj.title} 변경</button>
-                    <h4>{obj.title} <span onClick={() => goodCntAdd(index)}>👍🏻</span> {obj.goodCnt} </h4>
-                    <p>2월 17일 발행</p>
+                    <h4 onClick={() => modalOpen(index)}>{obj.title} <span onClick={() => goodCntAdd(index)}>👍🏻</span> {obj.goodCnt} </h4>
+                    <p>{obj.createDate}</p>
                 </div>
             ))}
 
-            <Modal/>
+            {modal === true ? <Modal
+                    title={titles[selectedPost].title}
+                    createDate={titles[selectedPost].createDate}
+                    content={titles[selectedPost].content}
+                /> : null}
         </div>
     );
 }
 
 // const Modal = () => { // 내충 내용 ~ }
-function Modal() {
+function Modal({title, createDate, content}) {
     // 컴포넌트 생성 법칙
     // 1. 반복적으로 html을 축약할 때
     // 2. 큰 페이지들
@@ -73,9 +93,9 @@ function Modal() {
     return (
         <>
             <div className="modal">
-                <h4>제목</h4>
-                <p>날짜</p>
-                <p>상세내용</p>
+                <h4>{title}</h4>
+                <p>{createDate}</p>
+                <p>{content}</p>
             </div>
         </>
     )
