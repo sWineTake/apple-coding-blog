@@ -14,7 +14,7 @@ function App() {
             {title : '우동 맛집', goodCnt : 0, content: '우동 맛집을 소개', createDate: '2021-02-19'},
     ]);
 
-    let [selectedPost, setSelectedPost] = useState(null);
+    let [selectedPost, setSelectedPost] = useState(0);
 
     // set 어쩌구 저쩌구 ~~
     let [modal, setModal] = useState(false);
@@ -49,6 +49,11 @@ function App() {
     }
 
     function modalOpen(index) {
+        if (titles.length <= index) {
+            setModal(false);
+            return ;
+        }
+
         if (modal && index === selectedPost) {
             setModal(false);
             setSelectedPost(null);
@@ -69,7 +74,7 @@ function App() {
 
             {titles.map((obj, index) => (
                 <div className="list" key={index}>
-                    <button onClick={() => change(index)}>{obj.title} 변경</button>
+                    {/*<button onClick={() => change(index)}>{obj.title} 변경</button>*/}
                     <h4 onClick={() => modalOpen(index)}>{obj.title} <span onClick={() => goodCntAdd(index)}>👍🏻</span> {obj.goodCnt} </h4>
                     <p>{obj.createDate}</p>
                 </div>
@@ -79,13 +84,14 @@ function App() {
                     title={titles[selectedPost].title}
                     createDate={titles[selectedPost].createDate}
                     content={titles[selectedPost].content}
+                    nextEvent={() => modalOpen(selectedPost + 1)}
                 /> : null}
         </div>
     );
 }
 
 // const Modal = () => { // 내충 내용 ~ }
-function Modal({title, createDate, content}) {
+function Modal(props) {
     // 컴포넌트 생성 법칙
     // 1. 반복적으로 html을 축약할 때
     // 2. 큰 페이지들
@@ -93,9 +99,10 @@ function Modal({title, createDate, content}) {
     return (
         <>
             <div className="modal">
-                <h4>{title}</h4>
-                <p>{createDate}</p>
-                <p>{content}</p>
+                <h4>{props.title}</h4>
+                <p>{props.createDate}</p>
+                <p>{props.content}</p>
+                <button onClick={props.nextEvent}>다음</button>
             </div>
         </>
     )
